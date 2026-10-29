@@ -48,6 +48,8 @@ and commits one commit per formula.
 
 ## Conventions
 
+- **NEVER `git push`.** Commit locally only; the user pushes themselves.
+
 - Commit message for a version bump: `<formula> <version>` (e.g. `jrs 0.14.6`),
   no `v` prefix.
 - Check a formula with `brew style Formula/<name>.rb` and, when possible,
