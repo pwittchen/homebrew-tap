@@ -33,7 +33,16 @@ file over `Formula/jrs.rb` verbatim.
 
 ## Updating formulae
 
-Use the `/update-formulae` skill (`.claude/skills/update-formulae`). It finds
+`scripts/update-formulae.sh [formula] [version]` does it without Claude: finds
+the latest release (or the pinned version), fetches the generated formula
+(artifact, else rerunning that tag's `manifests.sh`), checks every url/sha256
+against the release's `SHA256SUMS`, runs `brew style`, and commits
+`<formula> <version>` (no push). The **Update formulae** workflow
+(`.github/workflows/update-formulae.yml`, manual `workflow_dispatch`) runs it
+and pushes to master. In CI the repo-scoped token usually can't download
+another repo's artifacts, so it takes the regenerate path — same output.
+
+Or use the `/update-formulae` skill (`.claude/skills/update-formulae`). It finds
 the latest release of each project, fetches the generated formula, verifies it,
 and commits one commit per formula.
 
