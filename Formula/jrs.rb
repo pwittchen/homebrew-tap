@@ -5,23 +5,23 @@ class Jrs < Formula
 
   on_macos do
     on_arm do
-      url "https://github.com/pwittchen/jrs/releases/download/v0.14.7/jrs-aarch64-apple-darwin.tar.gz"
-      sha256 "ae5812f6693fb9bb9b8c520bbe9b38982a33e78dc43148a6a4bae1de6a9492a6"
+      url "https://github.com/pwittchen/jrs/releases/download/v0.14.8/jrs-aarch64-apple-darwin.tar.gz"
+      sha256 "1eab5ae1bb97c505701b6c54d6bf5b284b16f7fa578afb4e1085d647630330bc"
     end
     on_intel do
-      url "https://github.com/pwittchen/jrs/releases/download/v0.14.7/jrs-x86_64-apple-darwin.tar.gz"
-      sha256 "0b76d4b4de2376d8be26ad1e17bee185f7a977ff4643a1a083a690ff688df4d1"
+      url "https://github.com/pwittchen/jrs/releases/download/v0.14.8/jrs-x86_64-apple-darwin.tar.gz"
+      sha256 "a0bc1417b1ddb89144e9997e3b36f5e9dd4eb87262bcc3f22994e6fb0e60babd"
     end
   end
 
   on_linux do
     on_arm do
-      url "https://github.com/pwittchen/jrs/releases/download/v0.14.7/jrs-aarch64-unknown-linux-musl.tar.gz"
-      sha256 "b99b3c8c2949216a0b60f932651b8b9e52244c49f9dc9a9b5cfdcbe7ff6cdd60"
+      url "https://github.com/pwittchen/jrs/releases/download/v0.14.8/jrs-aarch64-unknown-linux-musl.tar.gz"
+      sha256 "a6a2109f1a87bff20245abf6eed4b835124fc9312ab6a8cceb0ed829d86c4fbd"
     end
     on_intel do
-      url "https://github.com/pwittchen/jrs/releases/download/v0.14.7/jrs-x86_64-unknown-linux-musl.tar.gz"
-      sha256 "a251abae91fc1cba2cb7312ff6ff8e736dbabfbfb44976df414e161e602d569c"
+      url "https://github.com/pwittchen/jrs/releases/download/v0.14.8/jrs-x86_64-unknown-linux-musl.tar.gz"
+      sha256 "813cc19c8bbe3cebe38450a7171c1cd5e20f7e7bfce7cf8647dda7279307ea5d"
     end
   end
 
