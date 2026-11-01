@@ -1,9 +1,10 @@
 # homebrew-tap
 
-Homebrew formulae by [pwittchen](https://github.com/pwittchen).
+Homebrew formulae and casks by [pwittchen](https://github.com/pwittchen).
 
 ```sh
 brew install pwittchen/tap/jrs
+brew install --cask pwittchen/tap/kayet
 ```
 
 | Formula | Description |
@@ -14,3 +15,7 @@ brew install pwittchen/tap/jrs
 kept as the release run's `package-manifests` artifact) and copied here by
 the **Update formulae** workflow (`scripts/update-formulae.sh`); don't edit it
 here.
+
+| Cask | Description |
+| --- | --- |
+| [`kayet`](Casks/kayet.rb) | [kayet](https://getkayet.app), a minimalistic text editor for macOS. Updates itself; `brew upgrade --greedy` updates it too. |

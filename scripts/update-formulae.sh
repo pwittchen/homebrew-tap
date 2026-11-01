@@ -1,12 +1,13 @@
 #!/usr/bin/env bash
-# Updates the formulae in this tap to the latest releases of their projects
-# and commits each bump as `<formula> <version>`; pushing is left to the caller.
+# Updates the formulae and casks in this tap to the latest releases of their
+# projects and commits each bump as `<name> <version>`; pushing is left to the
+# caller.
 #
-#   scripts/update-formulae.sh [formula] [version]
+#   scripts/update-formulae.sh [name] [version]
 #
-# With no arguments every formula in Formula/ is updated. A version (X.Y.Z)
-# pins that release instead of the latest one. Needs `gh` (authenticated, or
-# GH_TOKEN set); runs `brew style` when brew is available.
+# With no arguments everything in Formula/ and Casks/ is updated. A version
+# (X.Y.Z) pins that release instead of the latest one. Needs `gh` (authenticated,
+# or GH_TOKEN set); runs `brew style` when brew is available.
 
 set -euo pipefail
 
@@ -16,13 +17,20 @@ cd "$(dirname "$0")/.."
 repo_of() {
     case "$1" in
         jrs) echo pwittchen/jrs ;;
-        *) echo "error: no source repo known for formula '$1'" >&2; exit 1 ;;
+        kayet) echo pwittchen/kayet ;;
+        *) echo "error: no source repo known for '$1'" >&2; exit 1 ;;
     esac
 }
 
-# The version a formula's url lines point at.
+# The file of a formula or cask.
+file_of() {
+    if [ -f "Casks/$1.rb" ]; then echo "Casks/$1.rb"; else echo "Formula/$1.rb"; fi
+}
+
+# The version a formula's url lines or a cask's version line point at.
 current_version() {
-    sed -n 's|.*/releases/download/v\([^/]*\)/.*|\1|p' "$1" | sort -u
+    sed -n -e 's|.*/releases/download/v\([0-9][^/]*\)/.*|\1|p' \
+        -e 's|^ *version "\(.*\)"$|\1|p' "$1" | sort -u
 }
 
 # Writes the generated formula of jrs <version> to <dest>, from the release
@@ -49,6 +57,27 @@ fetch_jrs() {
         cp "$work/out/homebrew/jrs.rb" "$dest"
     fi
     rm -rf "$work"
+}
+
+# Rewrites the version and checksums of Casks/kayet.rb for <version>, from the
+# digests GitHub records for the release's .dmg assets.
+update_kayet() {
+    local version="$1" file="$2" arm intel
+    digest() {
+        gh release view "v$version" -R pwittchen/kayet --json assets \
+            -q ".assets[] | select(.name == \"kayet-macos-$1.dmg\") | .digest" |
+            sed -n 's/^sha256:\([0-9a-f]\{64\}\)$/\1/p'
+    }
+    arm="$(digest aarch64)"
+    intel="$(digest x86_64)"
+    if [ -z "$arm" ] || [ -z "$intel" ]; then
+        echo "error: v$version has no sha256 digest for both .dmg assets" >&2; exit 1
+    fi
+    sed -e "s/^\( *version \)\".*\"$/\1\"$version\"/" \
+        -e "s/^\( *sha256 arm: *\)\"[0-9a-f]*\"/\1\"$arm\"/" \
+        -e "s/^\( *intel: *\)\"[0-9a-f]*\"/\1\"$intel\"/" \
+        "$file" > "$file.new"
+    mv "$file.new" "$file"
 }
 
 # Fails unless every url in <formula> points at v<version> and its sha256
@@ -78,7 +107,8 @@ verify() {
 }
 
 update() {
-    local formula="$1" pinned="${2:-}" file="Formula/$1.rb" repo current latest work
+    local formula="$1" pinned="${2:-}" file repo current latest work
+    file="$(file_of "$formula")"
     [ -f "$file" ] || { echo "error: $file not found" >&2; exit 1; }
     repo="$(repo_of "$formula")"
     current="$(current_version "$file")"
@@ -97,13 +127,16 @@ update() {
         return
     fi
 
-    work="$(mktemp -d)"
-    gh release download "v$latest" -R "$repo" -p SHA256SUMS -D "$work"
     case "$formula" in
-        jrs) fetch_jrs "$latest" "$work/SHA256SUMS" "$file" ;;
+        jrs)
+            work="$(mktemp -d)"
+            gh release download "v$latest" -R "$repo" -p SHA256SUMS -D "$work"
+            fetch_jrs "$latest" "$work/SHA256SUMS" "$file"
+            verify "$file" "$latest" "$work/SHA256SUMS"
+            rm -rf "$work"
+            ;;
+        kayet) update_kayet "$latest" "$file" ;;
     esac
-    verify "$file" "$latest" "$work/SHA256SUMS"
-    rm -rf "$work"
 
     if command -v brew >/dev/null; then
         brew style "$file"
@@ -118,8 +151,8 @@ update() {
 if [ $# -gt 0 ] && [ "$1" != all ]; then
     update "$1" "${2:-}"
 else
-    [ $# -lt 2 ] || [ -z "$2" ] || { echo "error: a version needs a formula" >&2; exit 2; }
-    for f in Formula/*.rb; do
+    [ $# -lt 2 ] || [ -z "$2" ] || { echo "error: a version needs a name" >&2; exit 2; }
+    for f in Formula/*.rb Casks/*.rb; do
         update "$(basename "$f" .rb)"
     done
 fi

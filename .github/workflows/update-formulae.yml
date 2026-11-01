@@ -4,9 +4,9 @@ on:
   workflow_dispatch:
     inputs:
       formula:
-        description: Formula to update
+        description: Formula or cask to update
         type: choice
-        options: [all, jrs]
+        options: [all, jrs, kayet]
         default: all
       version:
         description: Version to pin (e.g. 0.14.7); empty for the latest release

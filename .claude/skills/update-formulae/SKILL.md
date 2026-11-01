@@ -1,6 +1,6 @@
 ---
 name: update-formulae
-description: Update the formulae in this Homebrew tap to the latest released versions of their projects (currently jrs). Use when the user asks to update, bump, or sync formulae, or after a new jrs release.
+description: Update the formulae and casks in this Homebrew tap to the latest released versions of their projects (currently jrs and kayet). Use when the user asks to update, bump, or sync formulae or casks, or after a new jrs or kayet release.
 argument-hint: "[formula] [version]"
 ---
 
@@ -30,6 +30,11 @@ Formula → repo mapping:
 | Formula | Repo |
 | --- | --- |
 | `jrs` | `pwittchen/jrs` |
+| `kayet` (cask) | `pwittchen/kayet` |
+
+For the `kayet` cask run `scripts/update-formulae.sh kayet [version]`: it
+rewrites `version` and both `sha256`s of `Casks/kayet.rb` from the release's
+asset digests and commits. Sections 2–3 below are about jrs.
 
 ## 2. Get the generated formula (jrs)
 
