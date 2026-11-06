@@ -1,9 +1,9 @@
 cask "kayet" do
   arch arm: "aarch64", intel: "x86_64"
 
-  version "0.14.0"
-  sha256 arm:   "538ebc128bdc6393200bbb5b5ce3cc7262529d5b1f072af51b14ff3cbdeb524d",
-         intel: "ebff264ce95f148bab50c2e59aca4eaee5184320d163db7aeeff41bdce606d66"
+  version "0.15.0"
+  sha256 arm:   "2db2c0d6cf1ae869ff3b549ec98abcb5e0ff8d0c414189d433f34699697fdb27",
+         intel: "4e11761d8b2f335c6d67330c6b6da4e4e37b3a6437f3a6fccbccc2ff2356f359"
 
   url "https://github.com/pwittchen/kayet/releases/download/v#{version}/kayet-macos-#{arch}.dmg"
   name "kayet"
