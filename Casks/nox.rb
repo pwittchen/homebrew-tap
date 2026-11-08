@@ -1,6 +1,6 @@
 cask "nox" do
-  version "0.1.0"
-  sha256 "4b05ccf6562e1994c083f49e6d77c09d0eb510b7c0231fc58901abd82afac31d"
+  version "0.1.1"
+  sha256 "d05ddedc6464cea9acca9653c8f8ef98def94f0b6b1fe6df9e7c7e4e992e6c49"
 
   url "https://github.com/pwittchen/nox/releases/download/v#{version}/nox-macos-aarch64.dmg"
   name "nox"
