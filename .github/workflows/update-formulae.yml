@@ -6,7 +6,7 @@ on:
       formula:
         description: Formula or cask to update
         type: choice
-        options: [all, jrs, kayet]
+        options: [all, jrs, kayet, nox]
         default: all
       version:
         description: Version to pin (e.g. 0.14.7); empty for the latest release

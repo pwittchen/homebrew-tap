@@ -38,6 +38,7 @@ file over `Formula/jrs.rb` verbatim.
 | Cask | Source repo | Where the cask comes from |
 | --- | --- | --- |
 | `kayet` | [pwittchen/kayet](https://github.com/pwittchen/kayet) | Hand-written; `update-formulae.sh` bumps `version` and `sha256` |
+| `nox` | [pwittchen/nox](https://github.com/pwittchen/nox) | Hand-written; `update-formulae.sh` bumps `version` and `sha256` |
 
 ### kayet
 
@@ -50,6 +51,15 @@ edited here. A bump only touches `version` and the two `sha256`s, taken from the
   it unless `--greedy` is given, so a stale `version` here breaks nothing.
 - `zap` must never trash `~/.kayet` as a whole: the default workspace, with the
   user's notes, is `~/.kayet/workspace`.
+
+### nox
+
+`Casks/nox.rb` installs the signed, notarized `nox-macos-aarch64.dmg` of a
+release (Apple Silicon only, macOS 13+), plus the `nox` agent CLI from
+`nox.app/Contents/Resources/bin`. A bump touches `version` and the single
+`sha256`, taken from the release asset's `digest`. No `auto_updates` while nox
+ships without its updater. Each nox release starts the Update formulae workflow
+from its `release.yml` (`HOMEBREW_TAP_TOKEN` secret in pwittchen/nox).
 
 ## Updating formulae
 

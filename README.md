@@ -5,6 +5,7 @@ Homebrew formulae and casks by [pwittchen](https://github.com/pwittchen).
 ```sh
 brew install pwittchen/tap/jrs
 brew install --cask pwittchen/tap/kayet
+brew install --cask pwittchen/tap/nox
 ```
 
 | Formula | Description |
@@ -19,3 +20,4 @@ here.
 | Cask | Description |
 | --- | --- |
 | [`kayet`](Casks/kayet.rb) | [kayet](https://getkayet.app), a minimalistic text editor for macOS. Updates itself; `brew upgrade --greedy` updates it too. |
+| [`nox`](Casks/nox.rb) | [nox](https://github.com/pwittchen/nox), a minimalistic, fast, native terminal for macOS (Apple Silicon). Includes the `nox` agent CLI. |

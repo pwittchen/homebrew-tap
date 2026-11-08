@@ -18,6 +18,7 @@ repo_of() {
     case "$1" in
         jrs) echo pwittchen/jrs ;;
         kayet) echo pwittchen/kayet ;;
+        nox) echo pwittchen/nox ;;
         *) echo "error: no source repo known for '$1'" >&2; exit 1 ;;
     esac
 }
@@ -80,6 +81,22 @@ update_kayet() {
     mv "$file.new" "$file"
 }
 
+# Rewrites the version and checksum of Casks/nox.rb for <version>, from the
+# digest GitHub records for the release's .dmg asset (Apple Silicon only).
+update_nox() {
+    local version="$1" file="$2" arm
+    arm="$(gh release view "v$version" -R pwittchen/nox --json assets \
+        -q '.assets[] | select(.name == "nox-macos-aarch64.dmg") | .digest' |
+        sed -n 's/^sha256:\([0-9a-f]\{64\}\)$/\1/p')"
+    if [ -z "$arm" ]; then
+        echo "error: v$version has no sha256 digest for nox-macos-aarch64.dmg" >&2; exit 1
+    fi
+    sed -e "s/^\( *version \)\".*\"$/\1\"$version\"/" \
+        -e "s/^\( *sha256 \)\"[0-9a-f]*\"$/\1\"$arm\"/" \
+        "$file" > "$file.new"
+    mv "$file.new" "$file"
+}
+
 # Fails unless every url in <formula> points at v<version> and its sha256
 # is the one <sums> lists for that asset.
 verify() {
@@ -136,6 +153,7 @@ update() {
             rm -rf "$work"
             ;;
         kayet) update_kayet "$latest" "$file" ;;
+        nox) update_nox "$latest" "$file" ;;
     esac
 
     if command -v brew >/dev/null; then
